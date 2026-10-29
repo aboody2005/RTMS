@@ -640,19 +640,6 @@ export default function LeaderPortalPage({ params }: PageProps) {
                             نسخ
                           </button>
                         </div>
-
-                        {/* WhatsApp Direct Share Button */}
-                        <a
-                          href={`https://wa.me/?text=${encodeURIComponent(
-                            `مرحباً يا ${inv.student_name}! أدعوك للانضمام إلى فريقي (${cleanTeamName}) في تجارب الأرانب لكلية الصيدلة. يرجى تأكيد انضمامك عبر الرابط:\n${rebaseAppUrl(inv.invitation_url)}`
-                          )}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className={styles.whatsappShareBtn}
-                          style={{ padding: '0.45rem 0.75rem', fontSize: '0.78125rem' }}
-                        >
-                          <span>💬</span> إرسال الرابط مباشرة لـ {inv.student_name} عبر واتساب
-                        </a>
                       </div>
                     ))}
                   </div>

@@ -765,25 +765,6 @@
   background-color: #15803d;
 }
 
-.whatsappShareBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1rem;
-  background-color: #059669;
-  color: #ffffff;
-  border-radius: 8px;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color 150ms ease;
-}
-
-.whatsappShareBtn:hover {
-  background-color: #047857;
-}
-
 /* Guidelines Box */
 .guidelinesBox {
   background-color: #0e1628;
