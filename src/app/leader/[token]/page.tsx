@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, use } from 'react';
 import { Card, Button, useToast } from '@/components/ui';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { getCleanTeamName } from '@/lib/utils';
+import { getCleanTeamName, rebaseAppUrl, copyToClipboard } from '@/lib/utils';
 import styles from './leader.module.css';
 
 interface PageProps {
@@ -134,8 +134,12 @@ export default function LeaderPortalPage({ params }: PageProps) {
       }
 
       const generated = data.invitations || (data.invitation_url ? [{ student_name: data.student_name, invitation_url: data.invitation_url }] : []);
-      setNewInvites(generated);
-      toast.success(data.message || `تم إنشاء ${generated.length} دعوة بنجاح!`);
+      const normalizedInvites = generated.map((inv: any) => ({
+        ...inv,
+        invitation_url: rebaseAppUrl(inv.invitation_url),
+      }));
+      setNewInvites(normalizedInvites);
+      toast.success(data.message || `تم إنشاء ${normalizedInvites.length} دعوة بنجاح!`);
       setSelectedStudentIds([]);
       loadLeaderData();
     } catch (err: any) {
@@ -616,14 +620,20 @@ export default function LeaderPortalPage({ params }: PageProps) {
                           <input
                             type="text"
                             readOnly
-                            value={inv.invitation_url}
+                            value={rebaseAppUrl(inv.invitation_url)}
                             className={styles.inviteUrlInput}
+                            onFocus={(e) => e.target.select()}
                           />
                           <button
                             type="button"
-                            onClick={() => {
-                              navigator.clipboard.writeText(inv.invitation_url);
-                              toast.success(`تم نسخ رابط "${inv.student_name}" بنجاح!`);
+                            onClick={async () => {
+                              const targetUrl = rebaseAppUrl(inv.invitation_url);
+                              const ok = await copyToClipboard(targetUrl);
+                              if (ok) {
+                                toast.success(`تم نسخ رابط "${inv.student_name}" بنجاح!`);
+                              } else {
+                                toast.error('تعذر نسخ الرابط تلقائياً، يرجى تحديده ونسخه يدوياً');
+                              }
                             }}
                             className={styles.copyUrlBtn}
                           >
@@ -634,7 +644,7 @@ export default function LeaderPortalPage({ params }: PageProps) {
                         {/* WhatsApp Direct Share Button */}
                         <a
                           href={`https://wa.me/?text=${encodeURIComponent(
-                            `مرحباً يا ${inv.student_name}! أدعوك للانضمام إلى فريقي (${cleanTeamName}) في تجارب الأرانب لكلية الصيدلة. يرجى تأكيد انضمامك عبر الرابط:\n${inv.invitation_url}`
+                            `مرحباً يا ${inv.student_name}! أدعوك للانضمام إلى فريقي (${cleanTeamName}) في تجارب الأرانب لكلية الصيدلة. يرجى تأكيد انضمامك عبر الرابط:\n${rebaseAppUrl(inv.invitation_url)}`
                           )}`}
                           target="_blank"
                           rel="noreferrer"

@@ -6,7 +6,7 @@ import {
   TableWrapper, Th, Td, ConfirmDialog, useToast
 } from '@/components/ui';
 import { Select } from '@/components/ui/Input';
-import { buildInvitationUrl, formatDate } from '@/lib/utils';
+import { buildInvitationUrl, formatDate, rebaseAppUrl, copyToClipboard } from '@/lib/utils';
 import type { TeamWithDetails, Student } from '@/types';
 
 export default function InvitationsPage() {
@@ -271,14 +271,19 @@ export default function InvitationsPage() {
                 <input
                   type="text"
                   readOnly
-                  value={createdUrl}
+                  value={rebaseAppUrl(createdUrl)}
                   className="w-full text-xs font-mono bg-white p-2 border border-green-300 rounded-md"
                 />
                 <button
                   type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(createdUrl);
-                    toast.success('تم نسخ الرابط بنجاح!');
+                  onClick={async () => {
+                    const fullUrl = rebaseAppUrl(createdUrl);
+                    const ok = await copyToClipboard(fullUrl);
+                    if (ok) {
+                      toast.success('تم نسخ الرابط بنجاح!');
+                    } else {
+                      toast.error('تعذر نسخ الرابط تلقائياً، يرجى تحديده ونسخه يدوياً');
+                    }
                   }}
                   className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs font-bold whitespace-nowrap"
                 >
@@ -286,7 +291,7 @@ export default function InvitationsPage() {
                 </button>
               </div>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`مرحباً! هذا هو رابط دعوتك للانضمام إلى الفريق المختبري:\n${createdUrl}`)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(`مرحباً! هذا هو رابط دعوتك للانضمام إلى الفريق المختبري:\n${rebaseAppUrl(createdUrl)}`)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs text-green-700 font-bold hover:underline"

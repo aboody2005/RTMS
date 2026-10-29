@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     target_team_id: team_id,
   });
 
-  const invitationUrl = buildInvitationUrl(token);
+  const invitationUrl = buildInvitationUrl(token, request);
 
   return NextResponse.json({
     success: true,

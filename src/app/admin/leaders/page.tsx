@@ -6,6 +6,7 @@ import {
   TableWrapper, Th, Td, ConfirmDialog, useToast
 } from '@/components/ui';
 import { Input, Select } from '@/components/ui/Input';
+import { rebaseAppUrl, copyToClipboard } from '@/lib/utils';
 import type { AcademicGroup } from '@/types';
 
 export default function LeadersPage() {
@@ -61,7 +62,8 @@ export default function LeadersPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'فشل في إعادة توليد الرابط');
 
-      navigator.clipboard.writeText(data.leader_url);
+      const targetUrl = rebaseAppUrl(data.leader_url);
+      await copyToClipboard(targetUrl);
       toast.success(`تم توليد رابط جديد لقائد "${team.name}" ونسخه إلى الحافظة!`);
       fetchTeams();
     } catch (err: any) {
@@ -308,13 +310,20 @@ export default function LeadersPage() {
                 <input
                   type="text"
                   readOnly
-                  value={generatedUrl}
+                  value={rebaseAppUrl(generatedUrl)}
                   className="w-full text-xs font-mono bg-white p-2 border border-green-300 rounded-md"
+                  onFocus={(e) => e.target.select()}
                 />
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(generatedUrl);
-                    toast.success('تم نسخ الرابط بنجاح!');
+                  type="button"
+                  onClick={async () => {
+                    const targetUrl = rebaseAppUrl(generatedUrl);
+                    const ok = await copyToClipboard(targetUrl);
+                    if (ok) {
+                      toast.success('تم نسخ الرابط بنجاح!');
+                    } else {
+                      toast.error('يرجى نسخ الرابط يدوياً');
+                    }
                   }}
                   className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-xs font-bold whitespace-nowrap"
                 >
@@ -322,7 +331,7 @@ export default function LeadersPage() {
                 </button>
               </div>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`مرحباً! هذا هو رابط إدارة فريقك في تجارب الأرانب:\n${generatedUrl}`)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(`مرحباً! هذا هو رابط إدارة فريقك في تجارب الأرانب:\n${rebaseAppUrl(generatedUrl)}`)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 text-xs text-green-700 font-bold hover:underline"

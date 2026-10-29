@@ -96,7 +96,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     details: { student_name: student.full_name },
   });
 
-  const leaderUrl = buildLeaderUrl(token);
+  const leaderUrl = buildLeaderUrl(token, request);
 
   return NextResponse.json({
     leader,
@@ -144,5 +144,5 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     target_student_id: leader.student_id,
   });
 
-  return NextResponse.json({ token, leader_url: buildLeaderUrl(token) });
+  return NextResponse.json({ token, leader_url: buildLeaderUrl(token, request) });
 }

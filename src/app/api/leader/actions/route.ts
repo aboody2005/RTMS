@@ -300,7 +300,7 @@ export async function POST(request: NextRequest) {
         continue;
       }
 
-      const invitationUrl = buildInvitationUrl(inviteToken);
+      const invitationUrl = buildInvitationUrl(inviteToken, request);
       createdInvitations.push({
         student_id: student.id,
         student_name: student.full_name,

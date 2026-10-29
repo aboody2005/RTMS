@@ -94,16 +94,195 @@ export function formatDateShort(dateString: string | null): string {
   });
 }
 
-// Build invitation URL
-export function buildInvitationUrl(token: string): string {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+/**
+ * Normalizes a base URL by trimming whitespace, removing trailing slashes,
+ * and ensuring an http/https protocol is present.
+ */
+export function normalizeBaseUrl(url?: string | null): string {
+  if (!url) return '';
+  let clean = url.trim();
+  // Strip all trailing slashes
+  clean = clean.replace(/\/+$/, '');
+  // Add https:// protocol if missing
+  if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+    clean = `https://${clean}`;
+  }
+  return clean;
+}
+
+/**
+ * Returns the effective application base URL.
+ * Prioritizes:
+ * 1. Browser context: window.location.origin (always matches the exact live domain)
+ * 2. Incoming request: x-forwarded-host + x-forwarded-proto, or request.nextUrl.origin
+ * 3. Environment variables: NEXT_PUBLIC_APP_URL
+ * 4. Hosting providers: Netlify URL / Vercel VERCEL_PROJECT_PRODUCTION_URL / VERCEL_URL
+ * 5. Production fallback: https://rtmshu.netlify.app
+ * 6. Local development fallback: http://localhost:3000
+ */
+export function getAppBaseUrl(requestOrBase?: any): string {
+  if (typeof requestOrBase === 'string' && requestOrBase.trim()) {
+    return normalizeBaseUrl(requestOrBase);
+  }
+
+  // 1. Browser context (client-side): window.location.origin is always 100% accurate
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    const origin = window.location.origin;
+    if (origin) {
+      return normalizeBaseUrl(origin);
+    }
+  }
+
+  // 2. Request context (server-side API routes & middleware)
+  if (requestOrBase) {
+    try {
+      const getHeader = (name: string): string | null => {
+        if (!requestOrBase.headers) return null;
+        if (typeof requestOrBase.headers.get === 'function') {
+          return requestOrBase.headers.get(name);
+        }
+        return requestOrBase.headers[name] || null;
+      };
+
+      const forwardedHost = getHeader('x-forwarded-host') || getHeader('host');
+      const forwardedProto = getHeader('x-forwarded-proto') || 'https';
+
+      if (forwardedHost) {
+        const hostWithoutPort = forwardedHost.split(',')[0].trim();
+        return normalizeBaseUrl(`${forwardedProto}://${hostWithoutPort}`);
+      }
+
+      if (requestOrBase.nextUrl?.origin) {
+        return normalizeBaseUrl(requestOrBase.nextUrl.origin);
+      }
+      if (typeof requestOrBase.url === 'string') {
+        const parsed = new URL(requestOrBase.url);
+        return normalizeBaseUrl(parsed.origin);
+      }
+    } catch {
+      // Ignore parsing errors and proceed to env fallbacks
+    }
+  }
+
+  // 3. Explicit environment variable NEXT_PUBLIC_APP_URL
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return normalizeBaseUrl(process.env.NEXT_PUBLIC_APP_URL);
+  }
+
+  // 4. Netlify built-in environment variables
+  if (process.env.URL) {
+    return normalizeBaseUrl(process.env.URL);
+  }
+  if (process.env.DEPLOY_PRIME_URL) {
+    return normalizeBaseUrl(process.env.DEPLOY_PRIME_URL);
+  }
+
+  // 5. Vercel built-in environment variables
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return normalizeBaseUrl(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+  if (process.env.VERCEL_URL) {
+    return normalizeBaseUrl(`https://${process.env.VERCEL_URL}`);
+  }
+
+  // 6. Production fallback (ensures deployed builds never produce localhost)
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://rtmshu.netlify.app';
+  }
+
+  // 7. Local development fallback
+  return 'http://localhost:3000';
+}
+
+/**
+ * Builds a full student invitation URL with proper base domain and normalized slashes.
+ * Supports passing a request object or custom base URL, or dynamically resolves it.
+ */
+export function buildInvitationUrl(token: string, requestOrBase?: any): string {
+  const base = getAppBaseUrl(requestOrBase);
   return `${base}/confirm/${token}`;
 }
 
-// Build team leader URL
-export function buildLeaderUrl(token: string): string {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+/**
+ * Builds a full team leader access URL with proper base domain and normalized slashes.
+ */
+export function buildLeaderUrl(token: string, requestOrBase?: any): string {
+  const base = getAppBaseUrl(requestOrBase);
   return `${base}/leader/${token}`;
+}
+
+/**
+ * Re-bases any link (e.g., from an API or database) to the current environment base URL.
+ * If the link has localhost but the current environment is production, or if it is a relative path,
+ * it replaces the domain with the true base URL.
+ */
+export function rebaseAppUrl(url?: string | null, requestOrBase?: any): string {
+  if (!url) return '';
+  const base = getAppBaseUrl(requestOrBase);
+
+  // If already a relative path
+  if (url.startsWith('/')) {
+    return `${base}${url}`;
+  }
+
+  try {
+    const parsed = new URL(url);
+    // If the URL has localhost/127.0.0.1 and current base is NOT localhost
+    const isLocalHost = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+    const isCurrentBaseLocal = base.includes('localhost') || base.includes('127.0.0.1');
+
+    if (isLocalHost && !isCurrentBaseLocal) {
+      return `${base}${parsed.pathname}${parsed.search}${parsed.hash}`;
+    }
+    // If the URL domain matches base, normalize it
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * Robust copy-to-clipboard utility that works on both desktop and mobile devices,
+ * with fallback for browsers without navigator.clipboard permissions or non-secure contexts.
+ */
+export async function copyToClipboard(text: string): Promise<boolean> {
+  if (!text) return false;
+
+  // 1. Modern Clipboard API
+  if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      // Fall through to fallback
+    }
+  }
+
+  // 2. Fallback using temporary textarea
+  if (typeof document !== 'undefined') {
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '0';
+      textarea.style.opacity = '0';
+      textarea.style.pointerEvents = 'none';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+
+      const success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return success;
+    } catch (err) {
+      console.error('Copy to clipboard failed:', err);
+      return false;
+    }
+  }
+
+  return false;
 }
 
 // Normalize Arabic name for duplicate detection

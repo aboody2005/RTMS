@@ -7,6 +7,8 @@ import {
   getMembershipStatusLabel,
   getInvitationStatusColor,
   getInvitationStatusLabel,
+  rebaseAppUrl,
+  copyToClipboard,
 } from '@/lib/utils';
 
 export * from './Button';
@@ -432,17 +434,9 @@ export function CopyLinkButton({ url, label = 'نسخ الرابط' }: CopyLinkB
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      const el = document.createElement('textarea');
-      el.value = url;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
+    const fullUrl = rebaseAppUrl(url);
+    const ok = await copyToClipboard(fullUrl);
+    if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

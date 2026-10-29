@@ -6,7 +6,7 @@ import {
   ConfirmDialog, CapacityBar, useToast
 } from '@/components/ui';
 import { Input, Select } from '@/components/ui/Input';
-import { getCleanTeamName } from '@/lib/utils';
+import { getCleanTeamName, rebaseAppUrl, copyToClipboard } from '@/lib/utils';
 import type { Team, AcademicGroup, Student } from '@/types';
 
 export default function TeamsPage() {
@@ -283,7 +283,8 @@ export default function TeamsPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'فشل في إعادة توليد الرابط');
 
-      navigator.clipboard.writeText(data.leader_url);
+      const targetUrl = rebaseAppUrl(data.leader_url);
+      await copyToClipboard(targetUrl);
       toast('تم إعادة توليد رابط القائد ونسخه إلى الحافظة!', { type: 'success' });
     } catch (err: any) {
       toast(err.message, { type: 'error' });
@@ -889,16 +890,22 @@ export default function TeamsPage() {
                 <input
                   type="text"
                   readOnly
-                  value={generatedLeaderUrl}
+                  value={rebaseAppUrl(generatedLeaderUrl)}
                   className="form-input"
                   style={{ fontSize: '0.8rem', fontFamily: 'monospace' }}
+                  onFocus={(e) => e.target.select()}
                 />
                 <Button
                   size="sm"
                   variant="primary"
-                  onClick={() => {
-                    navigator.clipboard.writeText(generatedLeaderUrl);
-                    toast('تم نسخ رابط القائد إلى الحافظة!', { type: 'success' });
+                  onClick={async () => {
+                    const targetUrl = rebaseAppUrl(generatedLeaderUrl);
+                    const ok = await copyToClipboard(targetUrl);
+                    if (ok) {
+                      toast('تم نسخ رابط القائد إلى الحافظة!', { type: 'success' });
+                    } else {
+                      toast('يرجى نسخ الرابط يدوياً', { type: 'error' });
+                    }
                   }}
                 >
                   نسخ
