@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const search = request.nextUrl.searchParams.get('search');
   const status = request.nextUrl.searchParams.get('status'); // available, pending, confirmed
   const page = parseInt(request.nextUrl.searchParams.get('page') || '1');
-  const pageSize = parseInt(request.nextUrl.searchParams.get('pageSize') || '50');
+  const pageSize = parseInt(request.nextUrl.searchParams.get('pageSize') || request.nextUrl.searchParams.get('page_size') || '50');
 
   const supabase = await createAdminClient();
 

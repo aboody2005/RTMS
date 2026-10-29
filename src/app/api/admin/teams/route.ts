@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
   // Historical removed/revoked records are safely preserved in the database for audit logs.
   const teams = (data || []).map((team: any) => ({
     ...team,
+    team_leader: Array.isArray(team.team_leader) ? (team.team_leader[0] || null) : (team.team_leader || null),
     memberships: (team.memberships || []).filter((m: any) =>
       ['confirmed', 'invitation_pending'].includes(m.status)
     ),

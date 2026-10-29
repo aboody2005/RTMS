@@ -241,7 +241,7 @@ export default function TeamsPage() {
     setAssignLeaderModalOpen(true);
 
     try {
-      const res = await fetch(`/api/admin/students?group_id=${team.academic_group_id}&page_size=200`);
+      const res = await fetch(`/api/admin/students?group_id=${team.academic_group_id}&pageSize=500&page_size=500`);
       const data = await res.json();
       setGroupStudents(data.students || []);
     } catch (err) {
@@ -262,10 +262,10 @@ export default function TeamsPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'فشل في تعيين قائد الفريق');
+      if (!res.ok) throw new Error(data.message || data.error || 'فشل في تعيين قائد الفريق');
 
       setGeneratedLeaderUrl(data.leader_url);
-      toast('تم تعيين قائد الفريق وتوليد رابط الدخول الخاص به بنجاح!', { type: 'success' });
+      toast(data.message || 'تم تعيين وتحديث قائد الفريق وتوليد رابط الدخول الخاص به بنجاح!', { type: 'success' });
       fetchTeams();
     } catch (err: any) {
       toast(err.message, { type: 'error' });
@@ -918,7 +918,14 @@ export default function TeamsPage() {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-2)', paddingTop: 'var(--spacing-3)' }}>
-            <Button variant="secondary" onClick={() => setAssignLeaderModalOpen(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setAssignLeaderModalOpen(false);
+                setGeneratedLeaderUrl(null);
+                setSelectedLeaderStudentId('');
+              }}
+            >
               إغلاق
             </Button>
             {!generatedLeaderUrl && (
@@ -927,7 +934,7 @@ export default function TeamsPage() {
                 onClick={handleAssignLeader}
                 disabled={submitting || !selectedLeaderStudentId}
               >
-                {submitting ? 'جاري التعيين...' : 'تأكيد تعيين القائد'}
+                {submitting ? 'جاري التعيين...' : (activeTeam?.team_leader ? 'تأكيد تغيير القائد' : 'تأكيد تعيين القائد')}
               </Button>
             )}
           </div>

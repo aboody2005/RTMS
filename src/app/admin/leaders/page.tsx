@@ -79,7 +79,7 @@ export default function LeadersPage() {
     setReassignModalOpen(true);
 
     try {
-      const res = await fetch(`/api/admin/students?group_id=${team.academic_group_id}&page_size=200`);
+      const res = await fetch(`/api/admin/students?group_id=${team.academic_group_id}&pageSize=500&page_size=500`);
       const data = await res.json();
       setGroupStudents(data.students || []);
     } catch (err) {
@@ -100,10 +100,10 @@ export default function LeadersPage() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'فشل في تعيين قائد الفريق');
+      if (!res.ok) throw new Error(data.message || data.error || 'فشل في تعيين قائد الفريق');
 
       setGeneratedUrl(data.leader_url);
-      toast.success('تم تعيين القائد الجديد وتوليد الرابط بنجاح!');
+      toast.success(data.message || 'تم تعيين وتحديث قائد الفريق وتوليد الرابط بنجاح!');
       fetchTeams();
     } catch (err: any) {
       toast.error(err.message || 'فشل في تعيين قائد الفريق');
@@ -112,10 +112,17 @@ export default function LeadersPage() {
     }
   };
 
+  // Helper to extract leader safely whether array or object
+  const getLeaderInfo = (t: any) => {
+    const leaderObj = Array.isArray(t?.team_leader) ? t.team_leader[0] : t?.team_leader;
+    return leaderObj || null;
+  };
+
   // Filtered teams list
   const filteredTeams = teams.filter(t => {
+    const leaderObj = getLeaderInfo(t);
     if (search) {
-      const leaderName = t.team_leader?.student?.full_name?.toLowerCase() || '';
+      const leaderName = leaderObj?.student?.full_name?.toLowerCase() || '';
       const teamName = t.name.toLowerCase();
       const s = search.toLowerCase();
       if (!leaderName.includes(s) && !teamName.includes(s)) return false;
@@ -123,8 +130,8 @@ export default function LeadersPage() {
     return true;
   });
 
-  const teamsWithLeader = filteredTeams.filter(t => t.team_leader);
-  const teamsWithoutLeader = filteredTeams.filter(t => !t.team_leader);
+  const teamsWithLeader = filteredTeams.filter(t => !!getLeaderInfo(t)?.student);
+  const teamsWithoutLeader = filteredTeams.filter(t => !getLeaderInfo(t)?.student);
 
   return (
     <div className="animate-fade-in space-y-6">
@@ -205,9 +212,10 @@ export default function LeadersPage() {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {filteredTeams.map((team) => {
-              const leader = team.team_leader?.student;
+              const leaderObj = getLeaderInfo(team);
+              const leader = leaderObj?.student;
               const hasLeader = !!leader;
-              const isRevoked = team.team_leader?.link_revoked_at;
+              const isRevoked = leaderObj?.link_revoked_at;
 
               return (
                 <tr key={team.id} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -283,16 +291,20 @@ export default function LeadersPage() {
       {/* Modal: Reassign Leader */}
       <Modal
         isOpen={reassignModalOpen}
-        onClose={() => setReassignModalOpen(false)}
-        title={`تعيين قائد لـ: ${activeTeam?.name || ''}`}
+        onClose={() => {
+          setReassignModalOpen(false);
+          setGeneratedUrl(null);
+          setSelectedStudentId('');
+        }}
+        title={getLeaderInfo(activeTeam)?.student ? `تغيير قائد فريق: ${activeTeam?.name || ''}` : `تعيين قائد لـ: ${activeTeam?.name || ''}`}
       >
         <div className="space-y-4">
           <p className="text-xs text-slate-500">
-            اختر طالباً من طلاب مجموعة <strong>{activeTeam?.academic_group?.name}</strong>. سيتم توليد رابط فريد وآمن يمكنه من خلاله دعوة زملائه.
+            اختر طالباً من طلاب مجموعة <strong>{activeTeam?.academic_group?.name}</strong>. سيتم تحديث صلاحية قيادة الفريق فورياً وتوليد رابط دخول آمن للقائد الجديد.
           </p>
 
           <Select
-            label="اختر الطالب"
+            label="اختر الطالب المرشح للقيادة"
             value={selectedStudentId}
             onChange={(e) => setSelectedStudentId(e.target.value)}
             options={groupStudents.map(s => ({
@@ -305,7 +317,7 @@ export default function LeadersPage() {
 
           {generatedUrl && (
             <div className="p-4 bg-green-50 border border-green-200 rounded-xl space-y-2">
-              <p className="text-xs font-bold text-green-800">✅ تم إنشاء الرابط بنجاح:</p>
+              <p className="text-xs font-bold text-green-800">✅ تم تعيين القائد وتوليد الرابط بنجاح:</p>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -330,19 +342,18 @@ export default function LeadersPage() {
                   نسخ
                 </button>
               </div>
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(`مرحباً! هذا هو رابط إدارة فريقك في تجارب الأرانب:\n${rebaseAppUrl(generatedUrl)}`)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-green-700 font-bold hover:underline"
-              >
-                <span>💬</span> مشاركة عبر واتساب مباشرة
-              </a>
             </div>
           )}
 
           <div className="flex justify-end gap-2 pt-4">
-            <Button variant="secondary" onClick={() => setReassignModalOpen(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setReassignModalOpen(false);
+                setGeneratedUrl(null);
+                setSelectedStudentId('');
+              }}
+            >
               إغلاق
             </Button>
             {!generatedUrl && (
@@ -351,7 +362,7 @@ export default function LeadersPage() {
                 onClick={handleReassign}
                 disabled={submitting || !selectedStudentId}
               >
-                {submitting ? 'جاري التعيين...' : 'تأكيد التعيين'}
+                {submitting ? 'جاري التعيين...' : (getLeaderInfo(activeTeam)?.student ? 'تأكيد تغيير القائد' : 'تأكيد تعيين القائد')}
               </Button>
             )}
           </div>
