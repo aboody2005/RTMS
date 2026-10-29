@@ -1,0 +1,345 @@
+/* Admin Layout & Sidebar CSS Module */
+
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--bg-app);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sidebar - Positioned on the right side in Arabic RTL */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: auto;
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border-left: 1px solid var(--sidebar-border);
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  transition: transform 250ms ease-in-out;
+  box-shadow: var(--shadow-xl);
+  direction: rtl;
+  text-align: right;
+}
+
+/* On mobile: hidden off-canvas to the right by default */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(100%);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+}
+
+/* On desktop: permanently docked on the right side in RTL */
+@media (min-width: 1024px) {
+  .sidebar {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.sidebarHeader {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--sidebar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.sidebarBrand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.sidebarLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: var(--sidebar-active-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.sidebarSubtitle {
+  font-size: 0.6875rem;
+  color: var(--sidebar-text);
+}
+
+.sidebarCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  color: var(--sidebar-text);
+  font-size: 1.1rem;
+}
+
+@media (min-width: 1024px) {
+  .sidebarCloseBtn {
+    display: none;
+  }
+}
+
+.sidebarNav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3);
+}
+
+.navGroup {
+  margin-bottom: var(--space-5);
+}
+
+.navGroupTitle {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  padding-inline: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.55rem var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  transition: all 150ms ease;
+  margin-bottom: 2px;
+}
+
+.navItem:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--sidebar-text-hover);
+}
+
+.navItemActive {
+  background-color: var(--sidebar-active-bg) !important;
+  color: #ffffff !important;
+  box-shadow: var(--shadow-xs);
+}
+
+.navItemIcon {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+}
+
+.navItemIndicator {
+  margin-inline-start: auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.sidebarFooter {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--sidebar-border);
+  flex-shrink: 0;
+}
+
+.logoutBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.55rem var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #94a3b8;
+  transition: all 150ms ease;
+  background: none;
+  border: none;
+  text-align: start;
+}
+
+.logoutBtn:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+/* Mobile Drawer Overlay Backdrop */
+.drawerBackdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 40;
+  animation: fadeIn 150ms ease-out;
+}
+
+@media (min-width: 1024px) {
+  .drawerBackdrop {
+    display: none;
+  }
+}
+
+/* Main Content Area */
+.mainArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .mainArea {
+    margin-right: var(--sidebar-width);
+    margin-left: 0;
+  }
+}
+
+/* Top Bar */
+.topBar {
+  height: var(--header-height);
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--space-4);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+  z-index: 20;
+}
+
+@media (min-width: 768px) {
+  .topBar {
+    padding-inline: var(--space-6);
+  }
+}
+
+.topBarStart {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.menuToggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-secondary);
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .menuToggleBtn {
+    display: none;
+  }
+}
+
+.topBarTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .topBarTitle {
+    display: block;
+  }
+}
+
+.topBarEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.adminBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  color: var(--primary-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.adminAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* Content Area */
+.contentArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .contentArea {
+    padding: var(--space-6);
+  }
+}
+
+@media (min-width: 1440px) {
+  .contentArea {
+    padding: var(--space-8);
+  }
+}
+
+/* Fluid inner container for 2K and 4K displays */
+.contentInner {
+  width: 100%;
+  max-width: var(--container-fluid);
+  margin-inline: auto;
+}

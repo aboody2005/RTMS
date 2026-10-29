@@ -1,0 +1,195 @@
+/* Admin Dashboard CSS Module */
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 1440px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 2000px) {
+  .statsGrid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+.dashboardCols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .dashboardCols {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cardActionLink {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.cardActionLink:hover {
+  text-decoration: underline;
+}
+
+.teamsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.teamItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.teamItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.teamItemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.teamName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.teamMeta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.teamCount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.auditList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.auditItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.auditItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.auditIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.auditAction {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.auditMeta {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.quickActionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .quickActionsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .quickActionsGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.quickActionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  text-decoration: none;
+  text-align: center;
+  transition: all 150ms ease;
+}
+
+.quickActionCard:hover {
+  border-color: var(--primary);
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.quickActionIcon {
+  font-size: 1.5rem;
+}
+
+.quickActionLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.quickActionCard:hover .quickActionLabel {
+  color: var(--primary-text);
+}

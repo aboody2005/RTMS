@@ -1,0 +1,976 @@
+/* ==========================================================================
+   TEAM LEADER PORTAL - CSS MODULE
+   Restored Original Dark Academic Pharmacy Design from Reference Screenshots
+   Arabic RTL First-Class, Fluid & Fully Responsive
+   ========================================================================== */
+
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #080d1a;
+  color: #f8fafc;
+  direction: rtl;
+  text-align: right;
+  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+  padding-bottom: 4rem;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+[data-theme="light"] .pageWrapper {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+/* ==========================================================================
+   1. Header Area (Matching input_file_0.png)
+   ========================================================================== */
+.header {
+  background: linear-gradient(180deg, #070c18 0%, #0d1527 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.5rem 1.25rem 1.25rem 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .header {
+  background: linear-gradient(180deg, #1e3a8a 0%, #1d4ed8 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brandGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.brandIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.brandInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.brandTitle {
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.brandSubtitle {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin: 0;
+  font-weight: 500;
+}
+
+[data-theme="light"] .brandSubtitle {
+  color: #bfdbfe;
+}
+
+.teamTagRow {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+[data-theme="light"] .teamTagRow {
+  color: #93c5fd;
+}
+
+.themeToggleWrapper {
+  flex-shrink: 0;
+}
+
+/* Dark Full-Width Capacity Pill Bar under title (matching input_file_0.png) */
+.headerCapacityBar {
+  background-color: #121a2d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .headerCapacityBar {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.headerCapacityRight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.headerCapacityLabel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+[data-theme="light"] .headerCapacityLabel {
+  color: #dbeafe;
+}
+
+.headerCapacityCount {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   2. Main Container
+   ========================================================================== */
+.mainContainer {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ==========================================================================
+   3. Top Capacity Progress Stats Card (matching input_file_1.png)
+   ========================================================================== */
+.capacityStatsCard {
+  background-color: #0e1628;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .capacityStatsCard {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.capacityStatsTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+}
+
+.capacityRateLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+[data-theme="light"] .capacityRateLabel {
+  color: #475569;
+}
+
+.capacityConfirmedText {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+[data-theme="light"] .capacityConfirmedText {
+  color: #0f172a;
+}
+
+.capacityMaxStats {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.capacityRatio {
+  font-weight: 800;
+  color: #ffffff;
+  font-size: 0.875rem;
+}
+
+[data-theme="light"] .capacityRatio {
+  color: #0f172a;
+}
+
+.capacityMaxLabel {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+[data-theme="light"] .capacityMaxLabel {
+  color: #64748b;
+}
+
+/* Progress Track and Bar */
+.progressTrack {
+  width: 100%;
+  height: 7px;
+  background-color: #1e293b;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .progressTrack {
+  background-color: #e2e8f0;
+}
+
+.progressFill {
+  height: 100%;
+  background: #22c55e;
+  border-radius: 9999px;
+  transition: width 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.capacityStatsBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.remainingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #4ade80;
+}
+
+[data-theme="light"] .remainingBadge {
+  color: #16a34a;
+}
+
+.pendingBadge {
+  color: #facc15;
+}
+
+[data-theme="light"] .pendingBadge {
+  color: #ca8a04;
+}
+
+/* ==========================================================================
+   4. Two-Column RTL Grid (matching input_file_1.png)
+   ========================================================================== */
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dashboard Section Card */
+.sectionCard {
+  background-color: #0e1628;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .sectionCard {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.sectionTitle {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+[data-theme="light"] .sectionTitle {
+  color: #0f172a;
+}
+
+.sectionTitlePurple {
+  color: #c084fc;
+}
+
+.sectionSubtitle {
+  font-size: 0.78125rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+[data-theme="light"] .sectionSubtitle {
+  color: #64748b;
+}
+
+/* ==========================================================================
+   5. Confirmed Team Members List (Right Column in RTL)
+   ========================================================================== */
+.memberList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.memberItem {
+  background-color: #121c32;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 0.875rem 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 150ms ease;
+}
+
+[data-theme="light"] .memberItem {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.memberItem:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: #162444;
+}
+
+[data-theme="light"] .memberItem:hover {
+  background-color: #f1f5f9;
+}
+
+.memberStart {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.leaderAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+  border: 1px solid #b45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.studentAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .studentAvatar {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.memberDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.memberNameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.memberName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+[data-theme="light"] .memberName {
+  color: #0f172a;
+}
+
+.leaderBadge {
+  background-color: #78350f;
+  color: #fbbf24;
+  border: 1px solid #92400e;
+  padding: 0.15rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.removeMemberBtn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f87171;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.removeMemberBtn:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+}
+
+/* ==========================================================================
+   6. Invite Student Form (Left Column in RTL)
+   ========================================================================== */
+.searchInput {
+  width: 100%;
+  background-color: #090e1a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  transition: border-color 150ms ease;
+}
+
+[data-theme="light"] .searchInput {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Filter Tabs */
+.tabsContainer {
+  background-color: #090e1a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 3px;
+  display: flex;
+  gap: 4px;
+}
+
+[data-theme="light"] .tabsContainer {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.tabBtn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.78125rem;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: #64748b;
+  cursor: pointer;
+  text-align: center;
+  transition: all 150ms ease;
+  font-family: inherit;
+}
+
+.tabBtnActive {
+  background-color: #1e3a8a;
+  color: #93c5fd;
+  border-color: #3b82f6;
+  font-weight: 700;
+}
+
+[data-theme="light"] .tabBtnActive {
+  background-color: #ffffff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Select Dropdown */
+.selectLabel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+[data-theme="light"] .selectLabel {
+  color: #475569;
+}
+
+.selectInput {
+  width: 100%;
+  background-color: #090e1a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 150ms ease;
+}
+
+[data-theme="light"] .selectInput {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.selectInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Scrollable Student Quick Pick List */
+.studentScrollContainer {
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 2px;
+}
+
+.studentCard {
+  background-color: #121c32;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 150ms ease;
+  user-select: none;
+}
+
+[data-theme="light"] .studentCard {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.studentCard:hover {
+  border-color: #3b82f6;
+  background-color: #162444;
+}
+
+[data-theme="light"] .studentCard:hover {
+  background-color: #f1f5f9;
+}
+
+.studentCardSelected {
+  border-color: #3b82f6 !important;
+  background-color: #1a2c56 !important;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+[data-theme="light"] .studentCardSelected {
+  background-color: #eff6ff !important;
+  border-color: #2563eb !important;
+}
+
+.studentCardDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.studentCardName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+[data-theme="light"] .studentCardName {
+  color: #0f172a;
+}
+
+/* Student Badges */
+.badgeAvailable {
+  background-color: #052e16;
+  border: 1px solid #166534;
+  color: #4ade80;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+[data-theme="light"] .badgeAvailable {
+  background-color: #dcfce7;
+  border-color: #86efac;
+  color: #15803d;
+}
+
+.badgeJoined {
+  background-color: #450a0a;
+  border: 1px solid #991b1b;
+  color: #fca5a5;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.badgePending {
+  background-color: #451a03;
+  border: 1px solid #92400e;
+  color: #fde68a;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+/* Primary Action Button */
+.submitInviteBtn {
+  width: 100%;
+  height: 42px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 150ms ease;
+  font-family: inherit;
+  margin-top: 0.5rem;
+}
+
+.submitInviteBtn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.submitInviteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Result Box for Newly Generated Link */
+.inviteResultBox {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #052e16;
+  border: 1px solid #166534;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inviteSuccessTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #86efac;
+  margin: 0;
+}
+
+.inviteUrlInputRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inviteUrlInput {
+  flex: 1;
+  font-family: monospace;
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #0a1f14;
+  border: 1px solid #166534;
+  border-radius: 6px;
+  color: #ffffff;
+}
+
+.copyUrlBtn {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: #166534;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copyUrlBtn:hover {
+  background-color: #15803d;
+}
+
+.whatsappShareBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background-color: #059669;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+}
+
+.whatsappShareBtn:hover {
+  background-color: #047857;
+}
+
+/* Guidelines Box */
+.guidelinesBox {
+  background-color: #0e1628;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+}
+
+[data-theme="light"] .guidelinesBox {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.guidelinesTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #f59e0b;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guidelinesList {
+  font-size: 0.78125rem;
+  color: #94a3b8;
+  padding-inline-start: 1.25rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  line-height: 1.6;
+}
+
+[data-theme="light"] .guidelinesList {
+  color: #475569;
+}
+
+/* ==========================================================================
+   7. Searchable Multi-Select Component Styles
+   ========================================================================== */
+.selectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.selectedCountBadge {
+  background-color: #1e3a8a;
+  color: #93c5fd;
+  border: 1px solid #3b82f6;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+[data-theme="light"] .selectedCountBadge {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.clearSelectionBtn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.71875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 150ms ease;
+  font-family: inherit;
+}
+
+.clearSelectionBtn:hover {
+  color: #f87171;
+}
+
+/* Chips Container */
+.chipsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  background-color: #090e1a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  max-height: 90px;
+  overflow-y: auto;
+}
+
+[data-theme="light"] .chipsContainer {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.studentChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #1e2f56;
+  border: 1px solid #3b82f6;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+[data-theme="light"] .studentChip {
+  background-color: #eff6ff;
+  border-color: #93c5fd;
+  color: #1e3a8a;
+}
+
+.chipRemoveBtn {
+  background: none;
+  border: none;
+  color: #93c5fd;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 150ms ease;
+}
+
+.chipRemoveBtn:hover {
+  color: #f87171;
+}
+
+/* Student Checkbox */
+.studentCheckbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid #475569;
+  background-color: #090e1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 150ms ease;
+}
+
+[data-theme="light"] .studentCheckbox {
+  border-color: #94a3b8;
+  background-color: #ffffff;
+}
+
+.studentCheckboxChecked {
+  background-color: #2563eb;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+.studentCheckboxDisabled {
+  border-color: #334155;
+  background-color: #0f172a;
+  opacity: 0.4;
+}
+
+/* Status Badges */
+.badgePendingThisTeam {
+  background-color: #451a03;
+  border: 1px solid #92400e;
+  color: #fde68a;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+
+.badgePendingOtherTeam {
+  background-color: #3b0764;
+  border: 1px solid #6b21a8;
+  color: #d8b4fe;
+  font-size: 0.71875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+

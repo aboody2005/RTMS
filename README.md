@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# نظام إدارة فرق تجارب الأرانب لطلاب الصيدلة
+### Rabbit Experiment Student Team Management System
 
-## Getting Started
+منظومة إلكترونية متكاملة وقابلة للنشر لإدارة وتوزيع طلاب كلية الصيدلة المشاركين في التجارب المخبرية العملية على الأرانب لمقرر علم الأدوية (Pharmacology).
 
-First, run the development server:
+---
 
+## 🌟 مميزات النظام الرئيسية
+
+### 1. إدارة المجموعات الأكاديمية (Academic Groups)
+- دعم 6 مجموعات دراسية افتراضية (`A1`, `A2`, `B1`, `B2`, `C1`, `C2`) قابلة للتعديل والإضافة غير محصورة بأسماء ثابتة.
+- سعة استيعابية افتراضية محددة بـ 41 طالباً لكل مجموعة قابلة للتعديل في أي وقت وبشكل مستقل.
+- مراقبة حية لعدد الطلاب المسجلين، المؤكدين، وغير الموزعين في كل مجموعة.
+
+### 2. استيراد وإدارة الطلاب (Student Import & Management)
+- استيراد الطلاب عبر ملفات Excel (`.xlsx`), أو ملفات `CSV`, أو نصوص بسيطة (اسم طالب في كل سطر)، أو الإدخال اليدوي.
+- مطابقة ذكية لأعمدة Excel مع حقول النظام (الاسم، المجموعة الدراسية، الرقم الجامعي، البريد الإلكتروني، الهاتف).
+- كشف التكرار المسبق لمنع تسجيل نفس الطالب مرتين (بالاعتماد على الرقم الجامعي أو الاسم المركب مع المجموعة).
+- معاينة شاملة وتدقيق البيانات قبل الحفظ النهائي في قاعدة البيانات.
+
+### 3. إدارة الفرق وقادة الفرق (Teams & Team Leaders)
+- إنشاء 8 فرق افتراضية لكل مجموعة دراسية (تمثل 8 أرانب للتجربة العملية) مع إمكانية زيادة أو تقليل عدد الفرق.
+- سعة محددة لكل فريق بشكل مستقل (افتراضياً 6 طلاب لكل فريق) مع خيار احتساب القائد ضمن السعة أو استثنائه.
+- تعيين قائد الفريق من قائمة طلاب نفس المجموعة الدراسية حصراً.
+- توليد وتدوير روابط دخول خاصة ومشفرة لقادة الفرق مع إمكانية إلغائها فوراً من المشرف.
+
+### 4. بوابة قائد الفريق (Team Leader Portal)
+- واجهة مستقلة وخاصة تفتح عبر رابط سري مشفر دون الحاجة لحساب مشرف.
+- تمكين القائد من استعراض أعضاء فريقه، السعة المتبقية، والبحث عن زملاء متاحين ضمن نفس مجموعته الدراسية.
+- مؤشرات حالة واضحة لكل طالب في المجموعة (متاح، منضم لفريق آخر، لديه دعوة معلقة).
+- توليد روابط دعوة فورية للطلاب مع زر مشاركة مباشر وسريع عبر واتساب (WhatsApp).
+- إمكانية إلغاء الدعوات المعلقة أو إزالة الأعضاء (حيث يعود الطالب متاحاً لمجموعته تلقائياً).
+
+### 5. نظام التأكيد المباشر للطلاب (Student Invitation & Confirmation)
+- روابط دعوة مشفرة وآمنة وفريدة (Cryptographic Random Tokens) مخزنة كـ SHA-256 Hashes.
+- صفحة تأكيد مخصصة باللغة العربية تعرض اسم الطالب، الفريق، قائد الفريق، المجموعة، والأعضاء الحاليين.
+- سؤال صريح مع زري: «تأكيد الانضمام» و«إلغاء».
+- حماية ذرية ضد التزامن (Concurrency Protection) تمنع انضمام الطالب لأكثر من فريق أو تجاوز سعة الفريق.
+
+### 6. التوزيع العشوائي الذكي للمتبقين (Intelligent Random Distribution)
+- صفحة مخصصة لمشرف النظام: «التوزيع العشوائي للطلبة المتبقين».
+- توزيع الطلاب غير المسكنين في أي فريق بنظام العدالة والتكافؤ التام على الفرق التي بها شواغر ضمن نفس المجموعة الدراسية.
+- إمكانية معاينة محاكاة التوزيع مسبقاً قبل اعتماده.
+- خيار التثبيت الفوري أو إنشاء دعوات معلقة تتطلب تأكيد الطلاب.
+- ملخص إحصائي بعد كل عملية يوضح عدد الطلاب الموزعين والشواغر المتبقية.
+
+### 7. إدارة التسكين اليدوي ونقل الطلاب (Manual Assignment & Transfer)
+- لوحة تحكم تفاعلية ثنائية الأعمدة: قائمة الطلاب غير الموزعين + كروت الفرق الحية.
+- إلحاق سريع لأي طالب غير موزع بأي فريق به مقاعد شاغرة بضغطة واحدة.
+- نقل الطلاب بين فرق نفس المجموعة الدراسية مع التحقق التلقائي من السعة.
+- إمكانية تعديل سعة أي فريق فورياً من اللوحة.
+
+### 8. تصدير التقارير إلى Excel (Excel Export)
+- تصدير مصنف عمل Excel احترافي كامل يدعم اتجاه اليمين إلى اليسار (RTL).
+- إنشاء ورقة عمل مستقلة (Worksheet) لكل مجموعة دراسية (`A1`, `A2`, `B1`, ...).
+- تنظيم الفرق وقادتها وأعضائها بوضوح مع مسافات فاصلة بين الفرق وجدول بالطلاب غير الموزعين.
+- إمكانية تصدير جميع المجموعات معاً أو مجموعة محددة.
+
+### 9. سجل رقابي كامل (Audit Logs)
+- تسجيل كافة الإجراءات الإدارية (استيراد، تعيين قادة، تغيير سعات، دعوات، إلغاء، حذف، وتوزيع عشوائي).
+- حفظ المستخدم المنفذ، الوقت الزمني، التفاصيل، والقيم السابقة والجديدة.
+
+---
+
+## 🛠️ التقنيات المستخدمة
+
+- **Framework**: Next.js 16 (App Router) مع TypeScript.
+- **Styling**: Tailwind CSS مع خط Cairo العربي ودعم كامل لـ RTL.
+- **Database**: Supabase PostgreSQL مع دوال ذرية (PL/pgSQL Functions) وإجراءات أمان Row Level Security (RLS).
+- **Authentication**: Supabase Auth لمشرفي النظام.
+- **Excel Handling**: ExcelJS للتوليد وقراءة الملفات.
+- **Validation**: Zod + React Hook Form.
+
+---
+
+## 🚀 دليل التثبيت والتشغيل المحلي
+
+### 1. المتطلبات المسبقة
+- تثبيت [Node.js](https://nodejs.org/) (الإصدار 18 أو أحدث).
+- حساب مجاني على [Supabase](https://supabase.com).
+
+### 2. تثبيت الحزم البرمجية
+افتح موجه الأوامر داخل مجلد المشروع وقم بتنفيذ:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. إعداد مشروع Supabase وقاعدة البيانات
+1. توجه إلى [لوحة تحكم Supabase](https://supabase.com/dashboard) وأنشئ مشروعاً جديداً.
+2. من القائمة الجانبية، افتح **SQL Editor**.
+3. قم بتنفيذ ملفات الهجرة بالترتيب التالي:
+   - **أولاً**: انسخ محتوى الملف `supabase/migrations/001_initial_schema.sql` والصقه واضغط **Run**.
+   - **ثانياً**: انسخ محتوى الملف `supabase/migrations/002_rls_policies.sql` والصقه واضغط **Run**.
+   - **ثالثاً**: انسخ محتوى الملف `supabase/migrations/003_seed_initial_data.sql` والصقه واضغط **Run** (لإنشاء المجموعات الست A1-C2 وفرق الأرانب الثمانية تلقائياً).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. إنشاء حساب المشرف (Admin)
+في لوحة تحكم Supabase:
+1. اذهب إلى **Authentication** -> **Users** واضغط **Add User** -> **Create User**.
+2. أدخل البريد الإلكتروني وكلمة المرور الخاصة بالمشرف.
+3. انسخ الـ `User UID` الذي تم إنشاؤه.
+4. افتح **SQL Editor** ونفذ الأمر التالي لربط المستخدم كمدير نظام:
+```sql
+INSERT INTO profiles (id, email, full_name, role, is_active)
+VALUES (
+  'ضع_هنا_معرف_المستخدم_UID',
+  'admin@pharmacy.edu',
+  'مشرف معمل الأدوية',
+  'admin',
+  true
+)
+ON CONFLICT (id) DO UPDATE SET role = 'admin';
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. إعداد المتغيرات البيئية
+أنشئ ملفاً باسم `.env.local` داخل مجلد المشروع وضع فيه المفاتيح الخاصة بمشروع Supabase (يمكنك نسخها من إعدادات المشروع في Supabase -> **Project Settings** -> **API**):
 
-## Learn More
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
-To learn more about Next.js, take a look at the following resources:
+# Application URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 6. تشغيل خادم التطوير
+```bash
+npm run dev
+```
+افتح المتصفح على الرابط: [http://localhost:3000](http://localhost:3000)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 هيكلية المشروع (Project Structure)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+rabbit-team-system/
+├── public/                 # الملفات الثابتة والأيقونات
+├── src/
+│   ├── app/
+│   │   ├── admin/          # صفحات لوحة تحكم المشرف (Dashboard, Groups, Teams, Import, Distribution, Export, ...)
+│   │   ├── api/            # نقاط النهاية الخلفية (API Routes & Server Actions)
+│   │   ├── auth/           # صفحات تسجيل الدخول والمصادقة
+│   │   ├── confirm/[token] # صفحة تأكيد دعوة الطالب العامة
+│   │   ├── leader/[token]  # بوابة قائد الفريق الخاصة
+│   │   ├── layout.tsx      # الهيكل العام للتطبيق (Cairo Font, RTL)
+│   │   └── page.tsx        # الصفحة الرئيسية للتعريف بالمنظومة
+│   ├── components/
+│   │   ├── admin/          # مكونات لوحة الإدارة (Sidebar, Tables)
+│   │   └── ui/             # مكونات واجهة المستخدم (Button, Input, Card, Modal, ...)
+│   ├── lib/
+│   │   ├── supabase/       # إعداد عملاء Supabase (Browser, Server, Admin)
+│   │   ├── utils.ts        # دوال مساعدة (التشفير، التنسيق، الروابط)
+│   │   └── validations.ts  # مخططات التحقق (Zod Schemas)
+│   └── types/              # تعريفات الأنواع البرمجية (TypeScript Interfaces)
+└── supabase/
+    └── migrations/         # ملفات مخطط قاعدة البيانات والصلاحيات
+        ├── 001_initial_schema.sql
+        ├── 002_rls_policies.sql
+        └── 003_seed_initial_data.sql
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚢 تعليمات النشر (Deployment Instructions)
+
+التطبيق مجهز بالكامل ليعمل على منصات الاستضافة السحابية مثل **Vercel**:
+1. قم برفع المستودع إلى GitHub / GitLab.
+2. اربط المستودع بمنصة **Vercel** واضبط مسار المشروع الرئيسي إلى `rabbit-team-system`.
+3. أضف المتغيرات البيئية المذكورة في ملف `.env.example` ضمن إعدادات **Environment Variables** في Vercel.
+4. اضغط **Deploy**.
