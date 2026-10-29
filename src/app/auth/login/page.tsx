@@ -91,7 +91,7 @@ export default function LoginPage() {
                 id="email"
                 type="text"
                 autoComplete="email"
-                placeholder="admin@pharmacy.edu"
+                placeholder="example@pharmacy.edu"
                 className={`form-input ${errors.email ? 'form-input-error' : ''}`}
                 {...register('email')}
               />
